@@ -1,0 +1,44 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #111;
+  --color-paper: #fff;
+  --color-accent: #ffe600;
+  --color-base: #e4e4de;
+  --color-base-soft: #edede7;
+  --color-muted: #57574f;
+  --color-faint: #9a9a94;
+  --color-skeleton: #ddd;
+  --color-disabled: #d6d6cf;
+  --color-disabled-ink: #7a7a72;
+  --shadow-brutal-2: 2px 2px 0 #111; /* mobile composer POST button */
+  --shadow-brutal-3: 3px 3px 0 #111; /* desktop composer POST button; mobile empty-state icon */
+  --shadow-brutal-4: 4px 4px 0 #111; /* LOAD MORE; mobile composer card; desktop empty-state icon */
+  --shadow-brutal-5: 5px 5px 0 #111; /* LOG IN button (desktop & mobile) */
+  --shadow-brutal-6: 6px 6px 0 #111; /* desktop composer card */
+  /* Cards have NO shadow (verified in docs/fe-challenge-specs.html: every
+     message-card instance omits box-shadow; only interactive/CTA elements
+     and the composer surface carry one). */
+  --font-sans: var(--font-space-grotesk); /* next/font: Space_Grotesk */
+  --font-mono: var(--font-space-mono); /* next/font: Space_Mono   */
+
+  --animate-simple-enter: simple-show-in 0.3s ease-out forwards;
+  @keyframes simple-show-in {
+    from {
+      opacity: 0;
+      transform: translateY(-1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+:root {
+  --root-bg-base: rgba(228, 228, 222, 1);
+}
+
+body {
+  background-color: var(--root-bg-base);
+}

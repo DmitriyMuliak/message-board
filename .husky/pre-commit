@@ -1,0 +1,4 @@
+# .husky/pre-commit
+. .husky/common.sh
+
+node ./.husky/lint-staged.mjs
