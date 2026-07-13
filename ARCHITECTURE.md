@@ -50,9 +50,7 @@ is the avatar's "this is you" tint — decorative, so being wrong costs nothing.
 `QueryClient` and ships it via `dehydrate()` + `<HydrationBoundary>`. The prefetch is **not awaited**:
 the pending query is dehydrated, so the shell streams immediately and the feed slot fills when data
 resolves (measured: ~100 ms vs ~1.4 s under 1.2 s of mock latency). Because dehydrated data carries
-its query key, a filter change simply lands on a different key and refetches. An earlier `initialData`
-version was keyless, seeded the wrong cache entry, and rendered a `?tags=PRODUCT` feed full of
-non-PRODUCT messages.
+its query key, a filter change simply lands on a different key and refetches.
 
 **Optimistic mutations.** `onMutate` cancels in-flight queries (else a landing refetch clobbers the
 write), snapshots the cache, then writes; `onError` restores the snapshot wholesale. The **client
@@ -72,7 +70,6 @@ fight it.
 - **Disable for no-ops, never for invalid.** Composer `POST` stays **enabled** when empty — empty is _invalid_, the user needs telling why, and a `disabled` button is out of the tab order and explains nothing. Editor `SAVE` **is** disabled when the text equals the original — unchanged is _valid but pointless_. (⌘+Enter bypasses a disabled button, so the same check also guards the submit handler.)
 - **A message your filters would hide doesn't silently vanish.** It's run through `matchesFilters` first; if it wouldn't show, we don't fake it into the list — we toast _"Posted — hidden by current filters"_. Optimistic UI may be optimistic about timing; it must not lie about where the data went.
 - **Accessibility over pixel fidelity, deliberately.** The spec sets `outline: none`; we restore `:focus-visible`. The char counter is `sr-only` on mobile (the spec omits it) rather than `hidden`, so the live region still announces.
-- **Design fidelity was measured, not eyeballed** — computed styles compared against the spec. Its webfonts fail to load offline, so screenshot-only comparison is actively misleading; it cost me one wrong "fix" before I caught it.
 
 ---
 
