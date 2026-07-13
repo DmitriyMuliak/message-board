@@ -113,9 +113,16 @@ export function Composer({ filters, className }: ComposerProps) {
               shadow={3}
               disabled={isSending}
               aria-busy={isSending}
-              className="h-[42px] text-[13px] md:text-sm"
+              aria-label={isSending ? 'Posting...' : undefined}
+              className="h-[42px] text-[13px] md:text-sm relative"
             >
-              {isSending ? 'POSTING…' : 'POST'}
+              POST
+              {isSending && (
+                <span
+                  aria-hidden="true"
+                  className="size-1.5 animate-pulse rounded-full bg-current absolute right-[5px] center"
+                />
+              )}
             </Button>
           </div>
         </div>

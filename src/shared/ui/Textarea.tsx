@@ -66,7 +66,7 @@ export function Textarea({
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}
         className={cn(
-          'w-full resize-none overflow-y-auto rounded-none bg-transparent font-sans text-[16px] text-ink',
+          'w-full resize-none overflow-y-auto rounded-none bg-transparent font-sans text-[16px] break-words text-ink',
           '[field-sizing:content] min-h-[50px]',
           'placeholder:text-faint',
           'outline-none focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-ink',
@@ -79,7 +79,7 @@ export function Textarea({
         <p
           id={errorId}
           role="alert"
-          className={cn('font-sans text-sm font-bold text-red-500', errorClass)}
+          className={cn('font-sans text-sm font-bold text-red-500 sr-only', errorClass)}
         >
           {error}
         </p>

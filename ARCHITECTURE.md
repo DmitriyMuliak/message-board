@@ -139,6 +139,12 @@ user-facing strings are still inline in components. The intended end state is th
 contains a literal — every string is a typed key in the dictionary, which is then the seam
 `next-intl` (or similar) plugs into. Skipped deliberately inside a challenge scoped.
 
+**6. A `FormField` wrapper.** Label, error message, `aria-describedby` wiring, and `sr-only` handling
+are currently duplicated per-input (`Textarea`, and any future `Input`/`Select`). The fix is a
+`FormField` component that owns that shared logic and composes a `shared/ui` primitive inside it,
+so each primitive (`Textarea`, `Input`, …) stays a plain, presentational field with no label/error
+concerns of its own.
+
 ---
 
 **Run it:** see `README.md`. To demo the rollback, post a message containing `#fail` — it
