@@ -82,7 +82,7 @@ the optimistic hooks' rollback, `useFeedFilters` ↔ URL round-tripping, and the
 | `:focus-visible` outlines restored   | The spec sets `outline: none`. Shipping that is an a11y failure — a11y wins over pixels. |
 | Two-step DELETE (`DELETE` → `SURE?`) | The spec doesn't design a confirm step. No modal ceremony; keyboard-accessible.          |
 | Error & empty states invented        | Undesigned; built in the spec's visual idiom.                                            |
-| Char counter is `sr-only` on mobile  | The spec omits it there, but it's an `aria-live` region — `hidden` would silence it.     |
+| Char counter shown on mobile too     | The spec hides it there, but `POST` stays enabled when oversized (by design — see `ARCHITECTURE.md`); without the visible count, an oversized submit silently does nothing and the user has no way to tell why. |
 
 Everything else was **measured** against the spec's computed styles rather than eyeballed.
 

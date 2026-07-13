@@ -97,10 +97,7 @@ export function Composer({ filters, className }: ComposerProps) {
           <div className="flex items-center gap-4">
             <span
               className={cn(
-                // `sr-only`, not `hidden`: the spec drops the counter from the mobile
-                // composer, but this is a live region — hiding it outright would stop
-                // screen readers announcing the count as the user types.
-                'sr-only font-mono text-xs md:not-sr-only',
+                'font-mono text-xs',
                 charCount === 0 ? 'text-muted' : isOversized ? 'font-bold text-ink' : 'text-faint',
               )}
               aria-live="polite"
@@ -111,7 +108,7 @@ export function Composer({ filters, className }: ComposerProps) {
             <Button
               type="submit"
               shadow={3}
-              disabled={isSending}
+              disabled={isSending || isOversized}
               aria-busy={isSending}
               aria-label={isSending ? 'Posting...' : undefined}
               className="h-[42px] text-[13px] md:text-sm relative"
