@@ -18,7 +18,7 @@
  * mismatch on top of the one already accepted for relative time; a fixed
  * constant avoids that entirely.
  */
-export const LOCALE = 'en-US';
+const LOCALE = 'en-US';
 
 const MINUTE_MS = 60_000;
 const HOUR_MS = 60 * MINUTE_MS;

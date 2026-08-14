@@ -12,7 +12,12 @@ export interface Toast {
   duration?: number | null;
 }
 
-export interface ToasterContextType {
+/**
+ * Internal, unlike the variant unions and Props types around `shared/ui`:
+ * `ToasterContext` itself is not exported, so this shape is unusable from outside.
+ * A public type nobody could act on is a promise for its own sake.
+ */
+interface ToasterContextType {
   toasts: Toast[];
   addToast: (toast: Omit<Toast, 'id'>) => string;
   removeToast: (id: string) => void;

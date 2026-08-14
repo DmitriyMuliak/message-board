@@ -48,10 +48,33 @@ optimistic row rolls back, a toast offers a retry, and your text stays in the co
 pnpm dev            # dev server
 pnpm build          # production build
 pnpm typecheck      # tsc --noEmit
-pnpm lint-check     # eslint
+pnpm lint-check     # eslint — also the architecture gate (see below)
+pnpm knip           # dead code: unused exports, files, dependencies
+pnpm knip:production # devDependencies reaching production code
 pnpm test:run       # vitest (once)
 pnpm test           # vitest (watch)
+pnpm size           # bundle budgets (needs a build first)
 ```
+
+`pnpm lint-check` is where the Feature-Sliced rules are enforced, not just described: layer
+direction, no sibling-slice imports, slice public APIs, who may reach `src/server/**`, that
+production code never imports a test, and that every TanStack Query client comes from the one factory
+in `app/query-client.ts`. The same command runs in [CI](.github/workflows/verify.yml), so a PR that
+breaks the architecture fails before review. The seven rules are listed in
+[`ARCHITECTURE.md` → Rules the linter checks](./ARCHITECTURE.md#rules-the-linter-checks).
+
+`pnpm knip` is the eighth rule and the one ESLint cannot hold: whether anything actually imports what a
+slice's `index.ts` promises. It also runs in CI. An export that is unimported on purpose says so with
+a `@public` tag — same section for the policy. `pnpm knip:production` is its companion: it walks the
+production graph only, so a test package reaching production code is caught even when it is a package
+nobody put on a deny-list.
+
+Unit tests sit next to what they test (`LoginForm.tsx`, `LoginForm.test.tsx`,
+`LoginForm.testkit.tsx`). [`tests/`](./tests) keeps only the harness that belongs to no slice — setup,
+msw, the `next/navigation` and `server-only` mocks — imported as `@tests/…`.
+
+For a broader second opinion, `pnpm dlx steiger ./src` gives an advisory FSD audit — it is not a
+dependency and not a gate; see the same section for why.
 
 ## Environment
 
@@ -77,11 +100,11 @@ the optimistic hooks' rollback, `useFeedFilters` ↔ URL round-tripping, and the
 
 ## Deliberate deviations from the design spec
 
-| Deviation                            | Why                                                                                      |
-| ------------------------------------ | ---------------------------------------------------------------------------------------- |
-| `:focus-visible` outlines restored   | The spec sets `outline: none`. Shipping that is an a11y failure — a11y wins over pixels. |
-| Two-step DELETE (`DELETE` → `SURE?`) | The spec doesn't design a confirm step. No modal ceremony; keyboard-accessible.          |
-| Error & empty states invented        | Undesigned; built in the spec's visual idiom.                                            |
+| Deviation                            | Why                                                                                                                                                                                                             |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `:focus-visible` outlines restored   | The spec sets `outline: none`. Shipping that is an a11y failure — a11y wins over pixels.                                                                                                                        |
+| Two-step DELETE (`DELETE` → `SURE?`) | The spec doesn't design a confirm step. No modal ceremony; keyboard-accessible.                                                                                                                                 |
+| Error & empty states invented        | Undesigned; built in the spec's visual idiom.                                                                                                                                                                   |
 | Char counter shown on mobile too     | The spec hides it there, but `POST` stays enabled when oversized (by design — see `ARCHITECTURE.md`); without the visible count, an oversized submit silently does nothing and the user has no way to tell why. |
 
 Everything else was **measured** against the spec's computed styles rather than eyeballed.

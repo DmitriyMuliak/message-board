@@ -1,6 +1,5 @@
 import {
   defaultShouldDehydrateQuery,
-  keepPreviousData,
   QueryClient,
   type QueryClientConfig,
 } from '@tanstack/react-query';
@@ -31,11 +30,11 @@ export function makeQueryClient(config: QueryClientConfig = {}): QueryClient {
         staleTime: 30_000,
         retry: 1,
         refetchOnWindowFocus: false,
-        // On filter change, keep showing the previous page's data (dimmed,
-        // per the designed "previous data + progress" state) instead of
-        // flashing a skeleton — skeletons are reserved for genuinely empty
-        // (cold) loads.
-        placeholderData: keepPreviousData,
+        // Nothing feed-specific belongs here. Defaults set on the client apply
+        // to *every* query in the app, including ones written next year by
+        // someone who never read this file — so per-resource behaviour is
+        // registered with `setQueryDefaults` next to the resource that owns it
+        // (see `messageListQueryDefaults`), not smuggled in globally.
         ...defaultOptions?.queries,
       },
       mutations: {

@@ -1,5 +1,5 @@
-import { FeedSkeleton } from '@/views/feed/FeedSkeleton';
 import { Skeleton } from '@/shared/ui/Skeleton';
+import { FeedSkeleton } from '@/views/feed';
 
 const GRID_CLASSNAME =
   'mx-auto flex w-full max-w-[1120px] flex-1 flex-col gap-8 px-4 py-8 lg:grid lg:grid-cols-[296px_1fr] lg:px-8';

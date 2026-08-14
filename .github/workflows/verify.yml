@@ -1,0 +1,75 @@
+name: verify
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      # The architecture gate. `eslint.config.mjs` enforces FSD layer direction,
+      # slice public APIs, who may reach `src/server/**`, and that production code
+      # never imports a test — running it here is what makes those rules
+      # non-optional rather than a convention people remember for a sprint. Husky
+      # covers the same ground locally, but a local hook is a suggestion; this is
+      # not.
+      - name: Lint
+        run: pnpm lint-check
+
+      # The other half of the architecture gate. ESLint reads one file at a time,
+      # so to an `index.ts` a re-export always looks used — whether anything on
+      # the other side imports it is a module-graph question. knip answers it, and
+      # also finds unused files and dependencies. It exits non-zero on a find, so
+      # no wrapper is needed. What may stay unimported on purpose is a `@public`
+      # tag, and the policy behind it is in ARCHITECTURE.md.
+      - name: Dead code
+        run: pnpm knip
+
+      # The structural half of "production code imports no tests". The ESLint rule
+      # above works from a list of package names, and any such list ages; this
+      # walks the production graph from production entry points and reports *any*
+      # devDependency that turns up in it, by whatever name. `--strict` is the
+      # operative flag — plain `--production` reports nothing here (measured).
+      - name: Production graph
+        run: pnpm knip:production
+
+      - name: Format check
+        run: pnpm format-check
+
+      - name: Test
+        run: pnpm test:run
+
+      - name: Build
+        run: pnpm build
+        env:
+          # Build-time only — the deployed app takes its secret from the
+          # environment, never from this value.
+          SESSION_SECRET: ci-build-placeholder-secret-long-enough-for-hs256
+
+      # Must follow Build: the budgets in `.size-limit.js` are measured against
+      # `.next/static/**`, the real output. Exceeding one fails the build, which is
+      # the difference between a budget and a bundle report nobody opens.
+      - name: Bundle size
+        run: pnpm size

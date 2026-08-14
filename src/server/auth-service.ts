@@ -89,7 +89,7 @@ export async function signSession(userId: string): Promise<string> {
  * `proxy.ts`, the Stage-3 SSR feed page) can treat "invalid" and "absent"
  * identically and fail closed (redirect / `401`) instead of crashing.
  */
-export async function verifySessionToken(token: string): Promise<Session | null> {
+async function verifySessionToken(token: string): Promise<Session | null> {
   try {
     const { payload } = await jwtVerify(token, getSecretKey(), { algorithms: ['HS256'] });
     if (typeof payload.sub !== 'string' || payload.sub.length === 0) {

@@ -2,13 +2,14 @@ import 'server-only';
 
 import type { ZodError } from 'zod';
 
-import { matchesFilters, type FeedFilters } from '@/features/feed-filters/model/filters';
 import {
   createMessageInputSchema,
+  matchesFilters,
   updateMessageInputSchema,
+  type FeedFilters,
   type Message,
   type MessagesPage,
-} from '@/entities/message/model/types';
+} from '@/entities/message';
 import { PAGE_SIZE } from '@/shared/config/constants';
 import { decodeCursor, encodeCursor } from '@/shared/lib/cursor';
 import { db, type DbMessage, type DbUser } from '@/server/db';

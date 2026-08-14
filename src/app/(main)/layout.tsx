@@ -1,4 +1,4 @@
-import { SessionProvider } from '@/features/auth/ui/SessionProvider';
+import { SessionProvider } from '@/entities/session';
 import { requireSession } from '@/server/require-session';
 import { getUserById } from '@/server/users-service';
 import { Header } from '@/widgets/header';

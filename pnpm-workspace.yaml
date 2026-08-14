@@ -1,3 +1,12 @@
-ignoredBuiltDependencies:
-  - sharp
-  - unrs-resolver
+# pnpm 10's `onlyBuiltDependencies` / `ignoredBuiltDependencies` were *removed* in
+# pnpm 11 and replaced by this single map. There is no deprecation warning, so a
+# leftover `ignoredBuiltDependencies:` block sits here looking effectual and does
+# nothing — this file had one until it was noticed.
+#
+# `false` = do not run this package's install scripts. None of the three needs to:
+# `msw` only writes a service-worker file for browser mocking (we use the Node
+# server), and `sharp`/`unrs-resolver` ship prebuilt binaries for this platform.
+allowBuilds:
+  msw: false
+  sharp: false
+  unrs-resolver: false

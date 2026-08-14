@@ -1,10 +1,19 @@
-import type { Message } from '@/entities/message/model/types';
 import { Avatar } from '@/shared/ui/Avatar';
 import { Card } from '@/shared/ui/Card';
 import { Chip } from '@/shared/ui/Chip';
-
 import { RelativeTime } from '@/shared/ui/RelativeTime';
 
+import type { Message } from '../model/types';
+
+/**
+ * Part of `@/entities/message`'s public API — the `@public` tag that tells knip
+ * so sits on the re-export in `../index.ts`, where knip attributes the export.
+ *
+ * `actions` is a slot: this card is built to be wrapped by an upper layer
+ * (`widgets/message-card` does), so the shape it accepts is a promise the entity
+ * makes rather than an internal detail. Kept exported for that reason alone —
+ * see the note above the export in `../index.ts`.
+ */
 export interface MessageCardProps {
   message: Message;
   activeTagFilter?: boolean;

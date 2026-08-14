@@ -2,6 +2,12 @@ import type { HTMLAttributes } from 'react';
 
 import { cn } from '@/shared/lib/cn';
 
+/**
+ * @public — a primitive's variant union: what a caller passes, and what a
+ * component extending this one re-types. `shared/` has no barrel, so
+ * `@/shared/ui/Avatar` *is* this module's public API and everything exported here
+ * is a promise on purpose. See ARCHITECTURE.md → Structure.
+ */
 export type AvatarVariant = 'self' | 'other';
 
 export interface AvatarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
