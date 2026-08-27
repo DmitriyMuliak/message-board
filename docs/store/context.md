@@ -162,27 +162,34 @@ comes from — are in [`tanstack-query/how-it-works.md`](../tanstack-query/how-i
 
 ## "Should I wrap `onChange` in `useCallback`?"
 
-No — not here.
+No. There is nothing here to optimise about the arrow function, and I would not add `useCallback` for
+this `onChange`.
 
-Creating an arrow function is not what causes a re-render. Re-renders come from changed state, props
-or context, or from a parent re-rendering. A new function identity on its own costs a heap
-allocation, which is nothing.
+The key point: creating a new function
 
-### When `useCallback` does matter
+```tsx
+(e) => store.setState({ email: e.target.value });
+```
 
-When the identity is **compared** by something. That is `memo`, a dependency array, or another
-reference-based optimisation:
+**does not, by itself, cause a re-render.** A re-render comes from a change in state, props or
+context, or from a parent re-rendering. A fresh closure costs one allocation, which is nothing.
+
+### When `useCallback` genuinely helps
+
+When something **compares** the identity. Say you have:
 
 ```tsx
 const handleChange = useCallback(
   (e: ChangeEvent<HTMLInputElement>) => {
     store.setState({ email: e.target.value });
   },
-  [store], // `store` is stable, so `handleChange` is stable forever
+  [store],
 );
 
 return <ExpensiveInput onChange={handleChange} />;
 ```
+
+and `ExpensiveInput` is memoised:
 
 ```tsx
 const ExpensiveInput = memo(function ExpensiveInput(props) {
@@ -190,24 +197,93 @@ const ExpensiveInput = memo(function ExpensiveInput(props) {
 });
 ```
 
-Here it earns its place: `memo` compares props by reference, so without `useCallback` a new
-`onChange` on every parent render defeats the memo entirely.
+Here `useCallback` earns its place, because `memo` compares props by reference. Without it:
 
-Note that this only works because `store` never changes. If your dependency array contains something
-that changes on every render, `useCallback` returns a new function anyway and you have added
-bookkeeping for nothing.
+```tsx
+<ExpensiveInput onChange={() => ...} />
+```
 
-### The thing that actually matters
+every parent re-render produces a new function → `memo` sees a new `onChange` → it re-renders anyway,
+and the memo has bought you nothing.
 
-Even with a thousand inputs each allocating a closure per render, that is not the bottleneck. The
-bottleneck is **how many components got told to re-render**.
+One condition that is easy to miss: this works **because `store` never changes**. Put something in
+the dependency array that changes every render and `useCallback` hands back a new function each time
+— you have added bookkeeping and gained nothing.
+
+### But in this architecture, something more interesting is going on
+
+```tsx
+function EmailInput() {
+  const store = useContext(FormContext)!;
+  const email = useFormField('email');
+
+  return <input value={email} onChange={(e) => store.setState({ email: e.target.value })} />;
+}
+```
+
+When `email` changes:
+
+```
+setState()
+   ↓
+store notifies subscribers
+   ↓
+useFormField('email')
+   ↓
+EmailInput re-renders
+```
+
+`NameInput`, subscribed through `useFormField('name')`, does **not** re-render — its snapshot did not
+change.
+
+And that matters far more than whether a new arrow function was allocated.
+
+### Where this would actually become critical
+
+Suppose you have:
+
+```
+Form
+ ├── 1000 EmailInput
+ ├── 500  Select
+ ├── 300  DatePicker
+ └── 200  expensive custom components
+```
+
+and every `onChange` allocates new functions — that is almost certainly not your bottleneck.
+
+Now do this instead:
+
+```tsx
+<FormContext.Provider value={{ state, setState }}>
+```
+
+with `state` changing on every keystroke:
+
+```
+email changed
+     ↓
+new context value
+     ↓
+ALL context consumers re-render
+     ↓
+💀
+```
+
+_That_ is a real problem. It is [the trap from the top of this page](#the-trap) — and it is the
+contrast that makes the point.
+
+### The way to remember it
 
 > Do not optimise the creation of a function. Optimise the number of components that receive the
 > signal to re-render.
 
-In this architecture the optimisation is the granular subscription, not `useCallback`. Get the
-subscription right and the closures stop mattering; get it wrong and no amount of `useCallback` will
-save you.
+`useCallback` is a tool for **stabilising a reference** — mostly when that matters to `memo`, to a
+dependency array, or to another reference-based optimisation.
+
+In this form-store approach the main optimisation is the granular subscription through
+`useSyncExternalStore`, not `useCallback`. Get the subscription right and the closures stop
+mattering; get it wrong and no amount of `useCallback` will save you.
 
 ## When to reach for this
 
