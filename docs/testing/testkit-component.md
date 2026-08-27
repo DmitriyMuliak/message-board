@@ -7,7 +7,7 @@ widget you do not own.
 `vi.mock`, ports/providers and the fixture lifecycle are deliberately out of scope here. Everything
 below is the code that exists today in `src/features/auth/ui/` — a slice's testing surface lives
 inside the slice, next to what it tests, and only the harness that belongs to no slice stays in
-[`tests/`](../tests).
+[`tests/`](../../tests).
 
 The worked example is four real files:
 
@@ -19,7 +19,7 @@ The worked example is four real files:
 | `src/features/auth/ui/LoginForm.harness.ts`           | the harness: a world, its MSW handlers, and a scenario vocabulary |
 
 The suffix is load-bearing, not decorative: `.test.` / `.testkit.` / `.harness.` / `.fixture.` are
-what [`eslint.config.mjs`](../eslint.config.mjs) rule 4 and [`knip.jsonc`](../knip.jsonc) use to tell
+what [`eslint.config.mjs`](../../eslint.config.mjs) rule 4 and [`knip.jsonc`](../../knip.jsonc) use to tell
 test-side code from production code, now that the directory no longer does. A file that forgets the
 suffix is treated as production and fails the lint rule that bans importing `msw` — loudly, which is
 the point.
@@ -187,7 +187,8 @@ export const createLoginFormDriver = ({ rootTestId } = { rootTestId: 'login-form
 - **`assert`** — the **accessibility contract**, not the rendered text. `fieldError` asserts both
   halves of the contract: the field is programmatically invalid _and_ its accessible description
   carries the message. `getByText(message)` would pass on a `<div>` floating anywhere on screen and
-  is not what a screen-reader user gets. This is the rule from [`TESTING.md`](./TESTING.md).
+  is not what a screen-reader user gets. This is a project-wide convention, not a habit of this kit —
+  see [`inner/ARCHITECTURE.md` → Conventions](../inner/ARCHITECTURE.md#conventions).
 
 ### The one law: `elements` must stay the `Object.assign` **target**
 
