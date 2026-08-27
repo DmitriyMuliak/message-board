@@ -3,16 +3,16 @@
 import dynamic from 'next/dynamic';
 import { Suspense, useState } from 'react';
 
-import type { FeedFilters } from '@/features/feed-filters/model/filters';
+import { EMPTY_FILTERS, type FeedFilters } from '@/entities/message';
 import { TAGS, type Tag } from '@/shared/config/constants';
 import { cn } from '@/shared/lib/cn';
+import { Button } from '@/shared/ui/Button';
 import { Chip } from '@/shared/ui/Chip';
 import { Skeleton } from '@/shared/ui/Skeleton';
 
+import { useFeedFilters } from '../lib/useFeedFilters';
 import { FilterSheet } from './FilterSheet';
 import { UserSelect } from './UserSelect';
-import { useFeedFilters } from '@/features/feed-filters/lib/useFeedFilters';
-import { Button } from '@/shared/ui/Button';
 
 const DateRangePicker = dynamic(
   () => import('@/shared/ui/DateRangePicker').then((mod) => mod.DateRangePicker),
@@ -26,7 +26,7 @@ function toggleTag(filters: FeedFilters, setFilters: (next: FeedFilters) => void
   setFilters({ ...filters, tags: nextTags });
 }
 
-export interface FilterBarProps {
+interface FilterBarProps {
   className?: string;
 }
 
@@ -59,7 +59,7 @@ function FilterBarInner({ className }: { className?: string }) {
     filters.to !== null;
 
   function handleClearAll() {
-    setFilters({ tags: [], user: null, from: null, to: null });
+    setFilters(EMPTY_FILTERS);
   }
 
   return (

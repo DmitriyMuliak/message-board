@@ -194,6 +194,8 @@ export const db: Db = globalThis.__dispatchDb;
  * and mutations); exposed for Stage 2's route-handler tests, which will
  * want a clean, deterministic `db` between test cases despite mutating
  * assertions (create/edit/delete) sharing this module-level singleton.
+ *
+ * @public — hence unimported, and `knip` is told so rather than left to guess.
  */
 export function reseedDb(): void {
   const fresh = seed();

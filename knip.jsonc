@@ -1,0 +1,72 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+
+  // knip answers the one architecture question ESLint structurally can't: *is
+  // anything on the other side of this barrel actually imported?* ESLint reads a
+  // single file, and to `index.ts` a re-export always looks used. See
+  // ARCHITECTURE.md → "Rules the linter checks".
+  //
+  // Everything below is an entry point knip cannot infer on its own. Its Next
+  // plugin already finds `src/app/**` (`src/proxy.ts` included — it knows Next
+  // 16's rename of `middleware.ts`), the Vitest plugin finds
+  // `tests/unit/**/*.test.tsx`, and package.json scripts cover the rest.
+  "entry": [
+    // Git hooks: `.husky/pre-commit` and `.husky/commit-msg` invoke these with
+    // `node ./…`, from shell files no module graph can see.
+    ".husky/lint-staged.mjs",
+    ".husky/lint-commit-message/index.mjs",
+
+    // The commit-message linter's own suites. They are `node:test`, not Vitest,
+    // so the Vitest plugin doesn't claim them — and nothing else runs them
+    // either (see ARCHITECTURE.md → Next steps). Declared here because a test
+    // file is an entry point by nature; that they are unwired is a separate
+    // problem, and one knip should not be made to hide.
+    ".husky/lint-commit-message/*.test.mjs",
+
+    // A worked reference for `docs/testkit-component.md`, not a module anything
+    // imports — it shows how to build a driver on top of `dom-accessibility-api`
+    // rather than a hand-rolled `aria-describedby` lookup. An entry point is the
+    // honest declaration for "unimported on purpose": the alternative is an
+    // `ignore`, which would also hide it going stale.
+    "tests/unit/test-utils/input-driver.reference.ts",
+  ],
+
+  // `!` marks a pattern as *production* code, which is what
+  // `pnpm knip:production` (`--production --strict`, a second CI step) analyses:
+  // it walks the graph from production entry points only, and `--strict` is the
+  // part that matters — plain `--production` says nothing about a devDependency
+  // reaching production code, while `--strict` names the file and line. That is
+  // the half of the "no tests in production" rule that does not age as the
+  // deny-list in `eslint.config.mjs` does: it needs no list of package names.
+  //
+  // What it does *not* cover: a production file importing a harness file by path
+  // (`@tests/…`). In production mode `tests/**` is outside the project, so knip
+  // has no opinion on it — that case belongs to the ESLint patterns, and both
+  // halves are needed for that reason.
+  //
+  // So: `src/**` is production, minus co-located suites and test kits. Patterns
+  // without `!` (the harness in `tests/`, the git hooks, root configs) are
+  // dev-only — present in the default run, absent from the production one.
+  "project": [
+    "src/**/*.{ts,tsx}!",
+    // The four test-side suffixes from `eslint.config.mjs` rule 4, repeated here
+    // for the other half of the same rule: excluded from *production* so
+    // `knip:production` never walks into `msw` through a harness, present in the
+    // default run so their own dead exports are still reported.
+    "!src/**/*.{test,spec}.{ts,tsx}!",
+    "!src/**/*.testkit.{ts,tsx}!",
+    "!src/**/*.harness.{ts,tsx}!",
+    "!src/**/*.fixture.{ts,tsx}!",
+    "tests/**/*.{ts,tsx}",
+    ".husky/**/*.mjs",
+    "*.{ts,mjs,js}",
+    ".*.{mjs,js}",
+    // Stylesheets stay dev-only on purpose. The default run needs them, or
+    // `@import 'tailwindcss'` in `globals.css` goes unseen and `tailwindcss`
+    // reads as an unused devDependency. The production run does not: Tailwind is
+    // compiled away at build time, and following the import there would report it
+    // as a devDependency used by production code — true of the source, false of
+    // the bundle.
+    "src/**/*.css",
+  ],
+}

@@ -1,6 +1,15 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/Select';
 import { TAGS } from '@/shared/config/constants';
 
+/**
+ * Part of `@/entities/message`'s public API — the `@public` tag that tells knip
+ * so sits on the re-export in `../index.ts`, where knip attributes the export.
+ *
+ * A controlled field that features embed in their own forms
+ * (`features/message-compose` does), so `value`/`onChange` is a contract the
+ * entity offers, not an internal detail — see the note above the export in
+ * `../index.ts`.
+ */
 export interface TagSelectProps {
   value: string;
   onChange: (value: (typeof TAGS)[number]) => void;

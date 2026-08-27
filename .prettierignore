@@ -1,0 +1,8 @@
+# Machine-generated. pnpm rewrites this file wholesale on every `pnpm add`, in its
+# own formatting — so `prettier --check .` in CI would start failing the moment
+# anyone touches a dependency, and `--write` would be undone by the next install.
+# Formatting a lockfile is nobody's win.
+pnpm-lock.yaml
+
+# Build output, never hand-edited.
+.next/

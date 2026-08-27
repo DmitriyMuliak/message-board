@@ -2,16 +2,15 @@
 
 import { useSuspenseInfiniteQuery, type InfiniteData } from '@tanstack/react-query';
 
-import { serializeFilters, type FeedFilters } from '@/features/feed-filters/model/filters';
-import type { MessagesPage } from '@/entities/message/model/types';
 import { apiService, ApiError } from '@/shared/api/http-client';
+import { apiRoutes } from '@/shared/api/routes';
 
+import { serializeFilters, type FeedFilters } from '../model/filters';
+import type { MessagesPage } from '../model/types';
 import { messageKeys } from './queries';
 
 type MessagesQueryKey = ReturnType<typeof messageKeys.list>;
 type MessagesPageParam = string | null;
-
-import { apiRoutes } from '@/shared/api/routes';
 
 function buildMessagesUrl(filters: FeedFilters, cursor: string | null, limit?: number): string {
   const parts: string[] = [];

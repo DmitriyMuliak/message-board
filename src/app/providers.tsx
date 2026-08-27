@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 
-import { makeQueryClient } from '@/shared/api/query-client';
 import { ToasterProvider } from '@/shared/ui/Toaster';
+
+import { createAppQueryClient } from './query-client';
 
 const ReactQueryDevtools = dynamic(
   () =>
@@ -14,7 +15,9 @@ const ReactQueryDevtools = dynamic(
 );
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(() => makeQueryClient());
+  // One client per mount, and `createAppQueryClient` rather than `makeQueryClient`
+  // so this root and the RSC prefetch in `(main)/page.tsx` cannot drift apart.
+  const [queryClient] = useState(() => createAppQueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -4,11 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/Select';
 import { Skeleton } from '@/shared/ui/Skeleton';
 import { cn } from '@/shared/lib/cn';
-import { getUsersAction } from '@/features/feed-filters/api/users.action';
+import { getUsersAction } from '../api/users.action';
 
 const ALL_USERS_VALUE = '__all__';
 
-export interface UserSelectProps {
+interface UserSelectProps {
   /** Author id (e.g. `u_ada`), or `null` for "all users" — `FeedFilters.user` (§8). */
   value: string | null;
   onChange: (userId: string | null) => void;

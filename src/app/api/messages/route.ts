@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server';
 import { apiError } from '@/server/http';
 import { createMessage, listMessages, MessageValidationError } from '@/server/messages-service';
 import { shouldSimulateFailure } from '@/server/simulate';
-import { normalizeFilters } from '@/features/feed-filters/model/filters';
-import { withApiRoute } from '@/shared/api/withApiRoute';
+import { withApiRoute } from '@/server/with-api-route';
+import { normalizeFilters } from '@/features/feed-filters';
 
 function parseLimit(raw: string | null): number | undefined {
   if (raw === null || raw.trim() === '') {

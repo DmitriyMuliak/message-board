@@ -35,7 +35,12 @@ export default defineConfig({
   test: {
     globals: true, // For React Testing Library
     environment: 'jsdom',
-    include: ['tests/unit/**/*.{test,spec}.{ts,tsx}'],
+    // Unit tests are co-located with what they test (`src/**`). What stays in
+    // `tests/` is the shared harness — setup, msw, the `next/navigation` and
+    // `server-only` mocks — which belongs to no slice, plus the one suite that
+    // tests that harness itself (`next-navigation.mock.test.ts`). Hence both
+    // roots: dropping the second would silently stop running it.
+    include: ['src/**/*.{test,spec}.{ts,tsx}', 'tests/**/*.{test,spec}.{ts,tsx}'],
     exclude: ['tests/e2e/**'],
     setupFiles: ['./tests/unit/test-utils/setup.ts'],
     env: testEnv,

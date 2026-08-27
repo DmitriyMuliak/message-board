@@ -1,6 +1,6 @@
 import { COMMIT_TYPE_RE, COMMIT_TYPES } from './constants.mjs';
 
-export const validators = {
+const validators = {
   taskNumbers(value) {
     const ids = value
       .trim()
@@ -29,7 +29,7 @@ export const validators = {
   },
 };
 
-export const validateAll = (results) => {
+const validateAll = (results) => {
   const failed = results.filter((r) => !r.isValid);
   if (failed.length === 0) return { isValid: true, message: '' };
   const message = failed.map((r, i) => `${i + 1}. ${r.message}`).join('\n');

@@ -9,7 +9,7 @@ import {
   updateMessage,
 } from '@/server/messages-service';
 import { shouldSimulateFailure } from '@/server/simulate';
-import { withApiRoute } from '@/shared/api/withApiRoute';
+import { withApiRoute } from '@/server/with-api-route';
 
 export const PATCH = withApiRoute(async (request, ctx) => {
   const id = ctx.params.id as string;

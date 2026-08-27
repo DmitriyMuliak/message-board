@@ -3,18 +3,16 @@
 import { useForm, useWatch, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { type FeedFilters } from '@/features/feed-filters/model/filters';
-import { createMessageInputSchema } from '@/entities/message/model/types';
+import { createMessageInputSchema, TagSelect, type FeedFilters } from '@/entities/message';
 import { TAGS } from '@/shared/config/constants';
 import { cn } from '@/shared/lib/cn';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Textarea } from '@/shared/ui/Textarea';
-import { TagSelect } from '@/entities/message/ui/TagSelect';
 
-import { useCreateMessageMutation } from '@/features/message-compose/api/useCreateMessageMutation';
+import { useCreateMessageMutation } from '../api/useCreateMessageMutation';
 
-export interface ComposerProps {
+interface ComposerProps {
   filters: FeedFilters;
   className?: string;
 }

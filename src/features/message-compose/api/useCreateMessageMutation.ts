@@ -2,13 +2,18 @@
 
 import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
 
-import { messageKeys } from '@/entities/message/api/queries';
-import { matchesFilters, type FeedFilters } from '@/features/feed-filters/model/filters';
-import type { CreateMessageInput, Message, MessagesPage } from '@/entities/message/model/types';
+import {
+  matchesFilters,
+  messageKeys,
+  type CreateMessageInput,
+  type FeedFilters,
+  type Message,
+  type MessagesPage,
+} from '@/entities/message';
+import { useSession } from '@/entities/session';
 import { apiService, ApiError } from '@/shared/api/http-client';
-import { useToast } from '@/shared/ui/Toaster';
 import { apiRoutes } from '@/shared/api/routes';
-import { useSession } from '@/features/auth/ui/SessionProvider';
+import { useToast } from '@/shared/ui/Toaster';
 
 /**
  * Optimistic create mutation.

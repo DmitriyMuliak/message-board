@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import { FeedError } from '@/views/feed/FeedError';
+import { FeedError } from '@/views/feed';
 
 /**
  * Designed error boundary for `/` ("Feed initial load fails → Error

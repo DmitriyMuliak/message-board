@@ -16,12 +16,20 @@ export const messageSchema = z.object({
 });
 export type Message = z.infer<typeof messageSchema>;
 
-export const messagesPageSchema = z.object({
-  items: z.array(messageSchema),
-  nextCursor: z.string().nullable(),
-  hasMore: z.boolean(), // handy, can be formed from nextCursor
-});
-export type MessagesPage = z.infer<typeof messagesPageSchema>;
+/**
+ * The paginated feed response. Declared, not `z.infer`red like its three
+ * neighbours, because this shape is the only one nothing ever parses: the client
+ * reads a page through `apiService<MessagesPage>()`. A zod object here would be
+ * a value whose only job is to be `typeof`'d — and, exported, a public schema
+ * that validates nothing. `items: Message[]` keeps it tied to `messageSchema`
+ * regardless.
+ */
+export interface MessagesPage {
+  items: Message[];
+  /** Opaque `base64(createdAt|id)`, `null` on the last page. */
+  nextCursor: string | null;
+  hasMore: boolean; // handy, can be formed from nextCursor
+}
 
 export const createMessageInputSchema = messageSchema.pick({
   id: true,

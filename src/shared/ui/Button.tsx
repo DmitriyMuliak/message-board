@@ -5,6 +5,11 @@ import type { ButtonHTMLAttributes, Ref } from 'react';
 import { cn } from '@/shared/lib/cn';
 
 export type BrutalShadow = 2 | 3 | 4 | 5 | 6;
+/**
+ * @public — same reasoning as `AvatarVariant`. (`BrutalShadow` above carries no
+ * tag only because knip already sees it used in a value position; it is no less
+ * public than this one.)
+ */
 export type ButtonVariant = 'accent' | 'ghost' | 'link';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

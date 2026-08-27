@@ -3,13 +3,11 @@
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 
-import {
-  normalizeFilters,
-  serializeFilters,
-  type FeedFilters,
-} from '@/features/feed-filters/model/filters';
+import { serializeFilters, type FeedFilters } from '@/entities/message';
 
-export interface UseFeedFiltersResult {
+import { normalizeFilters } from './normalizeFilters';
+
+interface UseFeedFiltersResult {
   /** Current filters parsed from the URL. Invalid URLs degrade gracefully. */
   filters: FeedFilters;
   /** Updates the URL via native `history.pushState` to avoid full RSC re-renders. */

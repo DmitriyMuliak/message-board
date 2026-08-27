@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import { Dialog } from 'radix-ui';
 
-import type { FeedFilters } from '@/features/feed-filters/model/filters';
+import { EMPTY_FILTERS, type FeedFilters } from '@/entities/message';
 import { TAGS, type Tag } from '@/shared/config/constants';
 import { cn } from '@/shared/lib/cn';
 import { Button } from '@/shared/ui/Button';
@@ -17,7 +17,7 @@ const DateRangePicker = dynamic(
   { ssr: false, loading: () => <Skeleton width="100%" height={104} /> },
 );
 
-export interface FilterSheetProps {
+interface FilterSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   filters: FeedFilters;
@@ -33,7 +33,7 @@ function toggleTag(filters: FeedFilters, setFilters: (next: FeedFilters) => void
 
 export function FilterSheet({ open, onOpenChange, filters, setFilters }: FilterSheetProps) {
   function handleClearAll() {
-    setFilters({ tags: [], user: null, from: null, to: null });
+    setFilters(EMPTY_FILTERS);
   }
 
   return (

@@ -15,7 +15,7 @@ import { db, type DbUser } from '@/server/db';
  * mock). Exported so the one login-flow test and any README/demo copy quote
  * this literal instead of a second, driftable hardcoded copy.
  */
-export const DEMO_PASSWORD = 'dispatch';
+const DEMO_PASSWORD = 'dispatch';
 
 /**
  * Looks up `email` (trimmed, case-insensitive) among the seeded users and
