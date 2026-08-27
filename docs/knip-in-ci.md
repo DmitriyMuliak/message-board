@@ -7,7 +7,7 @@ there for a specific structural reason, not for tidiness.
 
 ## The hole the public-API rule opened
 
-Rule 3 in [`ARCHITECTURE.md`](../ARCHITECTURE.md#rules-the-linter-checks) bans deep imports, which
+Rule 3 in [`lint-rules.md`](./lint-rules.md) bans deep imports, which
 forces every slice to have an `index.ts`. That barrel then **hides dead code from ESLint**: within
 `index.ts` a re-export always looks used, and ESLint reads one file at a time. Whether anything on the
 other side imports the symbol is a module-graph question, and structurally not one ESLint can answer.
@@ -44,8 +44,9 @@ suites, and `package.json` scripts cover the rest.
 An export that is unimported **on purpose** says so with a JSDoc `@public` tag. There are six today —
 `MessageCardProps`, `TagSelectProps`, `AvatarVariant`, `ButtonVariant`, `ErrorBoundaryFallbackProps`
 and one in `server/db.ts`. The policy for when a tag is justified is in
-[`ARCHITECTURE.md` → Structure](../ARCHITECTURE.md#structure): an export is a promise, so the bar is
-"a consumer actually imports it, or it is a marked extension point".
+[`inner/ARCHITECTURE.md` → Public API decisions](./inner/ARCHITECTURE.md#public-api-decisions): an
+export is a promise, so the bar is "a consumer actually imports it, or it is a marked extension
+point".
 
 That tag is also the proof the gate works. All six really are unimported, and `pnpm knip` passes
 **only because of the tags** — remove one and CI goes red.

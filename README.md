@@ -90,7 +90,6 @@ thing rather than like a fixture:
 - **Route handlers are thin HTTP adapters** over the same service functions the RSC prefetch calls
   directly — that seam is the contract a backend team would implement.
 - **`import 'server-only'`** makes a leak into client code a compile error, and a lint rule catches it
-  one step earlier. Who may reach `src/server/**` is
-  [rule 4](./ARCHITECTURE.md#rules-the-linter-checks).
+  one step earlier. Who may reach `src/server/**` is [rule 4](./docs/lint-rules.md).
 - **The store resets on restart** — in-memory, seeded deterministically, so the feed is the same on
   every run.

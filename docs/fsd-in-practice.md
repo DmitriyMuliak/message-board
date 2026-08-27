@@ -1,8 +1,8 @@
 # FSD in practice — how to classify a slice
 
-The rules are in [`ARCHITECTURE.md` → Rules the linter checks](../ARCHITECTURE.md#rules-the-linter-checks),
-and seven of them are lint errors, so this document does not restate them. It answers the questions
-the rules leave open — the ones a linter cannot decide for you:
+The rules are in [`lint-rules.md`](./lint-rules.md), and all seven are lint errors, so this document
+does not restate them. It answers the questions the rules leave open — the ones a linter cannot
+decide for you:
 
 - Is this thing a **feature** or a **widget**?
 - May a `view` import a feature **directly**, without a widget in between?
@@ -76,7 +76,7 @@ A view takes both a component and a **hook** (`useFeedFilters`) straight from a 
 The only condition on the hook is rule 3: it must be in the slice's public API.
 [`features/feed-filters/index.ts`](../src/features/feed-filters/index.ts) exports `useFeedFilters`. A
 barrel may promise anything — components, hooks, types, schemas. What it promises is
-[a decision, not a dump](../ARCHITECTURE.md#structure).
+[a decision, not a dump](./inner/ARCHITECTURE.md#public-api-decisions).
 
 ### So when is a widget actually needed?
 
