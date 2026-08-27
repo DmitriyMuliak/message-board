@@ -79,9 +79,15 @@ when a dependency moves it; `pnpm analyze` then opens Turbopack's module graph �
 with the import chain explaining why a module is there — to say which route it was. It is
 interactive-only and experimental, so it stays out of CI.
 
-Unit tests sit next to what they test (`LoginForm.tsx`, `LoginForm.test.tsx`,
-`LoginForm.testkit.tsx`). [`tests/`](./tests) keeps only the harness that belongs to no slice — setup,
-msw, the `next/navigation` and `server-only` mocks — imported as `@tests/…`.
+Unit tests sit next to what they test, and a slice's whole testing surface is named by suffix:
+`.test.` (the suite), `.testkit.` (props + driver + lifecycle), `.harness.` (the world it talks to —
+MSW handlers and a scenario vocabulary), `.fixture.` (a stand-in component a suite mounts). Those
+four suffixes are what ESLint and knip use to tell test-side code from production code now that the
+directory no longer does — a file that forgets one is treated as production and fails the rule that
+bans importing `msw`. [`tests/`](./tests) keeps only the harness that belongs to no slice — setup,
+msw, the `next/navigation` and `server-only` mocks — imported as `@tests/…`. The pattern, and how a
+kit survives being wrapped by a widget you do not own, is written up in
+[`docs/testkit-component.md`](./docs/testkit-component.md).
 
 For a broader second opinion, `pnpm dlx steiger ./src` gives an advisory FSD audit — it is not a
 dependency and not a gate; see the same section for why.

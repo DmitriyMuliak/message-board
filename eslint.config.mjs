@@ -96,6 +96,10 @@ const RESTRICTIONS = {
       '**/*.spec.*',
       '**/*.testkit',
       '**/*.testkit.*',
+      '**/*.harness',
+      '**/*.harness.*',
+      '**/*.fixture',
+      '**/*.fixture.*',
     ],
     message:
       'Production code may not import tests, test kits, or the test harness. The ' +
@@ -263,11 +267,26 @@ const eslintConfig = defineConfig([
   },
   {
     // The other side of rule 4, and it must come *after* every block above to win.
-    // Co-located suites and test kits are exempt from rules 1–6: a test imports
-    // `vitest`, mocks a slice's internals (`vi.mock('@/features/auth/api/
-    // login.action')`), and reaches the harness in `@tests/…`. A test that cannot do
-    // those things just tests less. Rule 7 stays on, for the reason above.
-    files: ['src/**/*.{test,spec}.{ts,tsx}', 'src/**/*.testkit.{ts,tsx}'],
+    // Co-located test-side files are exempt from rules 1–6: a test imports `vitest`,
+    // mocks a slice's internals (`vi.mock('@/features/auth/api/login.action')`), and
+    // reaches the harness in `@tests/…`. A test that cannot do those things just
+    // tests less. Rule 7 stays on, for the reason above.
+    //
+    // Four suffixes, because a slice's testing surface has four kinds of file and
+    // the suffix is the *only* thing that marks one as test-side — the directory no
+    // longer does, now that suites sit next to what they test:
+    //   `.test.`    the suite
+    //   `.testkit.` props + driver + lifecycle the suite (or a consumer) drives
+    //   `.harness.` the world the component talks to (MSW handlers + scenarios)
+    //   `.fixture.` a stand-in component a suite mounts, never shipped
+    // A file that forgets the suffix is treated as production code, which is the
+    // failure we want: it fails loudly here rather than quietly shipping `msw`.
+    files: [
+      'src/**/*.{test,spec}.{ts,tsx}',
+      'src/**/*.testkit.{ts,tsx}',
+      'src/**/*.harness.{ts,tsx}',
+      'src/**/*.fixture.{ts,tsx}',
+    ],
     rules: {
       'no-restricted-imports': restrictExcept('PUBLIC_API', 'SERVER_LAYER', 'TEST_ONLY'),
       'import-fsd/no-denied-layers': 'off',

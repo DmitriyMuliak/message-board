@@ -1,47 +1,70 @@
 import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { expect } from 'vitest';
+import type { SetupServer as MSWSetupServer } from 'msw/node';
+
 import { customRender } from '@tests/unit/test-utils/customRender';
+
 import { LoginForm } from './LoginForm';
+import { createWidgetHarness } from './LoginForm.harness';
 
 const defaultRenderParams = { overrideProps: {}, renderOptions: {} } as const;
 
-export const rendererLoginForm = ({ renderOptions, ...restParams } = defaultRenderParams) => {
-  const { props, driver, testMethods } = LoginFormTestKit(restParams);
+type RendererOptions = {
+  mswServer?: MSWSetupServer;
+  overrideProps?: Partial<React.ComponentProps<typeof LoginForm>>;
+  renderOptions?: Parameters<typeof customRender>[1];
+};
+
+export const rendererLoginForm = ({
+  renderOptions,
+  ...restParams
+}: RendererOptions = defaultRenderParams) => {
+  const { props, driver, testCycleMethods, harness } = LoginFormTestKit(restParams);
 
   return {
     render: () => {
-      testMethods.onSetup();
+      // Consumer will have it's own render method, and will use only the TestKit to get the props and driver.
+      // The harness is used to set up MSW handlers for the component under test.
       return customRender(<LoginForm {...props} />, renderOptions);
     },
     props,
     driver,
-    testMethods,
+    harness,
+    testCycleMethods,
   };
 };
 
 type LoginFormTestKitParams = {
   overrideProps?: Partial<React.ComponentProps<typeof LoginForm>>;
+  mswServer?: MSWSetupServer;
 };
 
 const defaultTestKitParams = {
   overrideProps: {},
+  // mockActions: {}
 } satisfies LoginFormTestKitParams;
 
-const LoginFormTestKit = ({ overrideProps }: LoginFormTestKitParams = defaultTestKitParams) => {
+export const LoginFormTestKit = ({
+  overrideProps,
+  mswServer,
+}: LoginFormTestKitParams = defaultTestKitParams) => {
   const defaultProps = {};
-  const testMethods = {
-    // Call MSW handlers or other setup logic here if needed, setup/run mocked API .etc
-    onSetup: () => {},
+  const harness = createWidgetHarness();
+  const driver = createLoginFormDriver();
+  const testCycleMethods = {
+    // Setup/clean State for test, mocked Server API / browser API .etc
+    onSetup: () => {
+      mswServer?.use(...harness.handlers);
+    },
     onCleanup: () => {},
   };
-
-  const driver = createLoginFormDriver();
 
   return {
     props: { ...defaultProps, ...overrideProps },
     driver,
-    testMethods,
+    testCycleMethods,
+    harness,
   };
 };
 
@@ -108,5 +131,10 @@ const createLoginFormDriver = ({ rootTestId } = { rootTestId: 'login-form' }) =>
     },
   };
 
-  return Object.assign(elements, actions, { assert });
+  // `elements` must stay the Object.assign *target*: its getters are lazy on purpose, because the
+  // driver is constructed before `render()` runs. Spreading instead (`{ ...elements, ...actions }`)
+  // evaluates every getter right here, so `getRoot()` would query an empty DOM and throw.
+  // For the same reason the members above close over `elements` rather than using `this` — a
+  // destructured `const { submit } = driver` keeps working.
+  return Object.assign(elements, { actions }, { assert });
 };
