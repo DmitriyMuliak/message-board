@@ -13,6 +13,7 @@
     "knip": "knip",
     "knip:production": "knip --production --strict",
     "size": "size-limit",
+    "analyze": "next experimental-analyze",
     "format-check": "prettier --check .",
     "format-fix": "prettier --write .",
     "tsc": "tsc",

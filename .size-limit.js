@@ -4,11 +4,23 @@
  * a budget is exceeded, so the build fails on the regression rather than on
  * someone noticing it in a review three weeks later.
  *
- * Why whole-output globs and not per-route First Load JS: Next 16 builds with
- * Turbopack, which emits flat, content-hashed chunks (`chunks/2f0cmt6gikabx.js`)
- * with no per-route directory to glob. The number that *is* stable across builds
- * is everything we ship to a browser — and that is also the number a careless
- * dependency moves, which is what this gate exists to catch.
+ * Why whole-output globs and not per-route First Load JS: the per-route number no
+ * longer exists. Next 16 removed build-time route stats — the table `next build`
+ * prints has no `Size`/`First Load JS` column, and Turbopack (the default bundler
+ * for `next build` since 16, not just for `next dev`) emits no
+ * `app-build-manifest.json`, so there is no route → chunk mapping left to script
+ * against either. Only flat, content-hashed chunks (`chunks/2f0cmt6gikabx.js`).
+ * The removal was deliberate: the old numbers undercounted webpack and
+ * overcounted Turbopack, reporting regressions that did not exist —
+ * https://github.com/vercel/next.js/issues/85712.
+ *
+ * So the number that *is* still measurable is everything we ship to a browser,
+ * and that is also the number a careless dependency moves, which is what this
+ * gate exists to catch. What it cannot see is one route doubling while the total
+ * holds. For that, `pnpm analyze` (`next experimental-analyze`, 16.1+) opens
+ * Turbopack's module graph with a per-route filter and the import chain that
+ * explains why a module is in there. It is interactive-only — no JSON, no exit
+ * code — so it diagnoses what this gate detects; it cannot replace it.
  *
  * Budgets are seeded from the current build with ~10% headroom on JS, and a
  * little more on CSS: Tailwind emits one rule per utility, so a handful of new

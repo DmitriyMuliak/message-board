@@ -54,6 +54,7 @@ pnpm knip:production # devDependencies reaching production code
 pnpm test:run       # vitest (once)
 pnpm test           # vitest (watch)
 pnpm size           # bundle budgets (needs a build first)
+pnpm analyze        # interactive bundle explorer, by route (needs a build first)
 ```
 
 `pnpm lint-check` is where the Feature-Sliced rules are enforced, not just described: layer
@@ -68,6 +69,15 @@ slice's `index.ts` promises. It also runs in CI. An export that is unimported on
 a `@public` tag — same section for the policy. `pnpm knip:production` is its companion: it walks the
 production graph only, so a test package reaching production code is caught even when it is a package
 nobody put on a deny-list.
+
+`pnpm size` is the bundle gate; `pnpm analyze` is its diagnostic half. Next 16 removed per-route build
+stats — the route table has no `First Load JS` column, and Turbopack (the default bundler for
+`next build` since 16) emits no `app-build-manifest.json`, so no route → chunk mapping survives to be
+measured ([vercel/next.js#85712](https://github.com/vercel/next.js/issues/85712)). The budgets in
+[`.size-limit.js`](./.size-limit.js) therefore gate the whole client output, which is what fails CI
+when a dependency moves it; `pnpm analyze` then opens Turbopack's module graph — filtered by route,
+with the import chain explaining why a module is there — to say which route it was. It is
+interactive-only and experimental, so it stays out of CI.
 
 Unit tests sit next to what they test (`LoginForm.tsx`, `LoginForm.test.tsx`,
 `LoginForm.testkit.tsx`). [`tests/`](./tests) keeps only the harness that belongs to no slice — setup,
