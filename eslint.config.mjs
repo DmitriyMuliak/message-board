@@ -305,6 +305,8 @@ const eslintConfig = defineConfig([
     'out/**',
     'build/**',
     'next-env.d.ts',
+    // Reference code inside documentation: illustrative, not part of the build.
+    'docs/**',
     // Unrelated pre-existing worktree checkouts, not part of this project:
     '.claude/worktrees/**',
   ]),
