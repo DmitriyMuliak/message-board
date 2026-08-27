@@ -187,7 +187,8 @@ export const createLoginFormDriver = ({ rootTestId } = { rootTestId: 'login-form
 - **`assert`** — the **accessibility contract**, not the rendered text. `fieldError` asserts both
   halves of the contract: the field is programmatically invalid _and_ its accessible description
   carries the message. `getByText(message)` would pass on a `<div>` floating anywhere on screen and
-  is not what a screen-reader user gets. This is the rule from [`TESTING.md`](./TESTING.md).
+  is not what a screen-reader user gets. This is a project-wide convention, not a habit of this kit —
+  see [`ARCHITECTURE.md` → Conventions](../ARCHITECTURE.md#conventions).
 
 ### The one law: `elements` must stay the `Object.assign` **target**
 
