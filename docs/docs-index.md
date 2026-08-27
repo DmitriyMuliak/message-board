@@ -27,10 +27,11 @@
 
 **[State](./store/README.md)**
 
-| Document                                              | Answers                                                           |
-| ----------------------------------------------------- | ----------------------------------------------------------------- |
-| [Local, context, or a store](./store/README.md)       | Which of the three, decided by who has to re-render               |
-| [Context that re-renders nothing](./store/context.md) | Context holding a store instead of a value, worked through a form |
+| Document                                              | Answers                                                                           |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------- |
+| [Local, context, or a store](./store/README.md)       | Which of the three, decided by who has to re-render                               |
+| [Context that re-renders nothing](./store/context.md) | Context holding a store instead of a value, worked through a form                 |
+| [Zustand — a composable store](./store/zustand.md)    | Scoped slices, behaviours as factories, and one list slice instead of ten `add()` |
 
 **Testing**
 

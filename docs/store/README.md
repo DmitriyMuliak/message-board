@@ -34,6 +34,10 @@ underneath. The mechanics — the observer pattern, why immutability is load-bea
 subscription actually fires — are in
 [`tanstack-query/how-it-works.md`](../tanstack-query/how-it-works.md).
 
+If you reach for a library, [**Zustand — a composable store**](./zustand.md) is the shape to build:
+slices scoped to their own subtree, and behaviours assembled from small factories rather than written
+out per store.
+
 ## Choosing
 
 | The value…                              | Use                                                                        |
