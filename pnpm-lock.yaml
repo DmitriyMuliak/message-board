@@ -75,6 +75,9 @@ importers:
       '@types/react-dom':
         specifier: ^19
         version: 19.2.3(@types/react@19.2.17)
+      dom-accessibility-api:
+        specifier: ^0.6.3
+        version: 0.6.3
       dotenv-cli:
         specifier: ^11.0.0
         version: 11.0.0

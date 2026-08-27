@@ -10,7 +10,7 @@ import { loginAction } from '../api/login.action';
 import { Input } from '@/shared/ui/Input';
 import { useToast } from '@/shared/ui/Toaster';
 
-export function LoginForm() {
+export function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { addToast } = useToast();
@@ -29,6 +29,7 @@ export function LoginForm() {
       const result = await loginAction(values);
 
       if (result.success) {
+        onSuccess?.();
         const from = searchParams.get('from');
         const isSafeRedirect = from && from.startsWith('/') && !from.startsWith('//');
         router.push(isSafeRedirect ? from : '/');

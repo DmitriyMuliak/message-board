@@ -7,6 +7,7 @@ import { createToasterDriver } from '../../shared/ui/Toast/ToasterTestkit';
 import { router } from '@/tests/unit/test-utils/next-navigation.mock';
 import { loginAction } from '@/features/auth/api/login.action';
 
+// Example how to mock server action directly.
 vi.mock('@/features/auth/api/login.action', () => ({
   loginAction: vi.fn(),
 }));
@@ -18,13 +19,22 @@ describe('LoginForm', () => {
   let toasterDriver: ReturnType<typeof createToasterDriver>;
 
   beforeEach(() => {
-    formRenderer = rendererLoginForm({ mswServer: server });
+    formRenderer = rendererLoginForm();
     formRenderer.testCycleMethods.onSetup();
-    formRenderer.render();
+
+    // Example how to reset mocked server action directly.
+    vi.mocked(loginAction).mockReset();
+
+    // Example of how to use harness to set up MSW handlers for the component under test directly.
+    server.use(...formRenderer.harness.handlers);
 
     formDriver = formRenderer.driver;
     formScenario = formRenderer.harness.scenario;
     toasterDriver = createToasterDriver();
+
+    // Without this the driver's lazy `getRoot()` queries an empty DOM and every
+    // test fails with `Unable to find [data-testid="login-form"]`.
+    formRenderer.render();
   });
 
   afterEach(() => {
@@ -41,10 +51,10 @@ describe('LoginForm', () => {
   });
 
   it('blocks submission for a malformed email, leaving the valid password untouched', async () => {
+    await formDriver.actions.loginAs('not-an-email', 'dispatch');
+
     // Example of how to use harness to set up a scenario for the component under test.
     formScenario.paymentDeclined();
-
-    await formDriver.actions.loginAs('not-an-email', 'dispatch');
 
     await formDriver.assert.fieldError('email', 'Enter a valid email address.');
     await formDriver.assert.noFieldError('password');
