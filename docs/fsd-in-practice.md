@@ -187,6 +187,9 @@ Keep the table above for teams that will bring Zustand into their own project. B
 stating out loud is the other one: **most "where should the store live" questions dissolve when there
 is no store.**
 
+Choosing between `useState`, context and an external store in the first place is a separate question
+from which layer owns it — that one is in [`store/README.md`](./store/README.md).
+
 ### One practical caveat
 
 `MessageCardWithActions` calls `useSession()` and two mutation hooks **per row**. With roughly fifteen

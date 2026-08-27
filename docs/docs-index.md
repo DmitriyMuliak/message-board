@@ -25,6 +25,13 @@
 | [FSD in practice](./fsd-in-practice.md) | Is this a feature or a widget? May a view import a feature directly? Where does state live? |
 | [Why knip runs in CI](./knip-in-ci.md)  | The dead-code gate — what it checks, and the hole it exists to close                        |
 
+**[State](./store/README.md)**
+
+| Document                                              | Answers                                                           |
+| ----------------------------------------------------- | ----------------------------------------------------------------- |
+| [Local, context, or a store](./store/README.md)       | Which of the three, decided by who has to re-render               |
+| [Context that re-renders nothing](./store/context.md) | Context holding a store instead of a value, worked through a form |
+
 **Testing**
 
 | Document                                          | Answers                                                                                                                |
