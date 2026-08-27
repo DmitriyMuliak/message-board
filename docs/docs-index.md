@@ -6,7 +6,6 @@
 | ----------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | [Architecture](../ARCHITECTURE.md)              | The map — layers, what enforces them, and where each pattern is written up                   |
 | [Implementation notes](./inner/ARCHITECTURE.md) | What this particular app does, and what the general rules look like once they hit real files |
-| [Scripts](./scripts.md)                         | Every `pnpm` script, and which of them are CI gates                                          |
 
 **[Architecture, in detail](./architecture/README.md)** — the expanded chapters of
 `ARCHITECTURE.md`, not standalone guides
@@ -18,12 +17,11 @@
 | [The data layer](./architecture/data-layer.md)           | Fetching, hydration, optimistic writes, invalidation, where failures are caught         |
 | [Rendering](./architecture/rendering.md)                 | RSC vs client, per-route strategy, re-render discipline, keeping the bundle honest      |
 
-**Structure**
+**Feature-Sliced Design**
 
 | Document                                | Answers                                                                                     |
 | --------------------------------------- | ------------------------------------------------------------------------------------------- |
-| [FSD in practice](./fsd-in-practice.md) | Is this a feature or a widget? May a view import a feature directly? Where does state live? |
-| [Why knip runs in CI](./knip-in-ci.md)  | The dead-code gate — what it checks, and the hole it exists to close                        |
+| [FSD in practice](./fsd/in-practice.md) | Is this a feature or a widget? May a view import a feature directly? Where does state live? |
 
 **[State](./store/README.md)**
 
@@ -35,10 +33,10 @@
 
 **Testing**
 
-| Document                                          | Answers                                                                                                                |
-| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| [TestKit for a component](./testkit-component.md) | **The approach we use.** How a component ships its own driver + harness, and how that survives a widget you do not own |
-| [PortKit](./portkit/README.md)                    | Reference material only — a broader ports-and-fixtures approach, kept for comparison, not adopted                      |
+| Document                                                  | Answers                                                                                                                |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [TestKit for a component](./testing/testkit-component.md) | **The approach we use.** How a component ships its own driver + harness, and how that survives a widget you do not own |
+| [PortKit](./portkit/README.md)                            | Reference material only — a broader ports-and-fixtures approach, kept for comparison, not adopted                      |
 
 **[Data fetching — TanStack Query](./tanstack-query/README.md)**
 
@@ -73,10 +71,17 @@
 | [Progressive enhancement](./forms/progressive-enhancement.md) | A form that submits before JS loads, `next-safe-action`, argument binding |
 | [React Hook Form](./forms/react-hook-form.md)                 | Validation modes, why `isValid` surprises you, `watch` vs `useWatch`      |
 
+**Infrastructure**
+
+| Document                                     | Answers                                                              |
+| -------------------------------------------- | -------------------------------------------------------------------- |
+| [Scripts](./infra/scripts.md)                | Every `pnpm` script, and which of them are CI gates                  |
+| [Why knip runs in CI](./infra/knip-in-ci.md) | The dead-code gate — what it checks, and the hole it exists to close |
+| [HTTPS on localhost](./infra/local-https.md) | `mkcert`, per-framework setup, and when a tunnel is simpler          |
+
 **Language and platform**
 
 | Document                                          | Answers                                                                   |
 | ------------------------------------------------- | ------------------------------------------------------------------------- |
 | [TypeScript techniques](./typescript/tips.md)     | Branded types, type-level string parsing, partial type argument inference |
 | [Flex `min-width: auto`](./css/flex-min-width.md) | Why a flex item refuses to shrink, and the one-line fix                   |
-| [HTTPS on localhost](./infra/local-https.md)      | `mkcert`, per-framework setup, and when a tunnel is simpler               |

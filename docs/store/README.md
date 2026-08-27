@@ -66,5 +66,5 @@ arrangement in `useState`, and exactly **two** contexts — the session and the 
 effectively immutable after mount.
 
 That is the point: most "where should the store live" questions dissolve when there is no store. See
-[`fsd-in-practice.md` → Where state lives](../fsd-in-practice.md#3-where-state-lives) for how that
+[`fsd-in-practice.md` → Where state lives](../fsd/in-practice.md#3-where-state-lives) for how that
 interacts with the layer rules.

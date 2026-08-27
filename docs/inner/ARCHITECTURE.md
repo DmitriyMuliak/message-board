@@ -74,7 +74,7 @@ A slice's whole testing surface is named by suffix — `.test.` (the suite), `.t
 driver + lifecycle), `.harness.` (the world it talks to), `.fixture.` (a stand-in component a suite
 mounts). Those four are what the tooling uses to tell test-side code from production code now that
 the directory no longer does. How a kit is built, and how it survives being wrapped by a widget you
-do not own, is in [`testkit-component.md`](../testkit-component.md) — that is the approach in use
+do not own, is in [`testkit-component.md`](../testing/testkit-component.md) — that is the approach in use
 here. [`portkit/`](../portkit/README.md) documents a broader ports-and-fixtures variant and is kept
 as reference material; it is **not** what this repo does.
 

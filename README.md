@@ -66,13 +66,13 @@ pnpm analyze        # interactive bundle explorer, by route (needs a build first
 ```
 
 Everything above except `dev`, `test` (watch) and `analyze` runs as a
-[CI gate](./.github/workflows/verify.yml) — `lint-check` being the one that _enforces_ the
+[CI gate](.github/workflows/verify.yml) — `lint-check` being the one that _enforces_ the
 architecture rather than describing it. What each does, and why it blocks a merge:
-[`docs/scripts.md`](./docs/scripts.md).
+[`docs/scripts.md`](./docs/infra/scripts.md).
 
 ## Environment
 
-See [`.env.example`](./.env.example) — three variables, all optional except `SESSION_SECRET`:
+See [`.env.example`](.env.example) — three variables, all optional except `SESSION_SECRET`:
 
 | Variable            | Default | Purpose                                                                     |
 | ------------------- | ------- | --------------------------------------------------------------------------- |

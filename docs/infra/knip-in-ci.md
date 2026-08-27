@@ -2,12 +2,12 @@
 
 [knip](https://knip.dev) is a dead-code finder — its own description is _"Find and fix unused
 dependencies, exports and files in your TypeScript and JavaScript projects"_. The name is Dutch for
-"cut". It runs as two separate CI steps in [`verify.yml`](../.github/workflows/verify.yml), and it is
+"cut". It runs as two separate CI steps in [`verify.yml`](../../.github/workflows/verify.yml), and it is
 there for a specific structural reason, not for tidiness.
 
 ## The hole the public-API rule opened
 
-Rule 3 in [`lint-rules.md`](./architecture/lint-rules.md) bans deep imports, which
+Rule 3 in [`lint-rules.md`](../architecture/lint-rules.md) bans deep imports, which
 forces every slice to have an `index.ts`. That barrel then **hides dead code from ESLint**: within
 `index.ts` a re-export always looks used, and ESLint reads one file at a time. Whether anything on the
 other side imports the symbol is a module-graph question, and structurally not one ESLint can answer.
@@ -32,19 +32,19 @@ knip's plugins infer most entry points on their own: the Next plugin finds `src/
 `src/proxy.ts` — it knows about Next 16's rename of `middleware.ts`), the Vitest plugin finds the
 suites, and `package.json` scripts cover the rest.
 
-[`knip.jsonc`](../knip.jsonc) declares only what no module graph can see:
+[`knip.jsonc`](../../knip.jsonc) declares only what no module graph can see:
 
 - the husky hooks, which shell files invoke with `node ./…`
 - the commit-message linter's own suites, which are `node:test` rather than Vitest
 - `tests/unit/test-utils/input-driver.reference.ts` — a worked reference for
-  [`testkit-component.md`](./testkit-component.md) that nothing imports on purpose
+  [`testkit-component.md`](../testing/testkit-component.md) that nothing imports on purpose
 
 ## The escape hatch: `@public`
 
 An export that is unimported **on purpose** says so with a JSDoc `@public` tag. There are six today —
 `MessageCardProps`, `TagSelectProps`, `AvatarVariant`, `ButtonVariant`, `ErrorBoundaryFallbackProps`
 and one in `server/db.ts`. The policy for when a tag is justified is in
-[`inner/ARCHITECTURE.md` → Public API decisions](./inner/ARCHITECTURE.md#public-api-decisions): an
+[`inner/ARCHITECTURE.md` → Public API decisions](../inner/ARCHITECTURE.md#public-api-decisions): an
 export is a promise, so the bar is "a consumer actually imports it, or it is a marked extension
 point".
 
@@ -75,7 +75,7 @@ reported.
 `knip --production --strict` does **not** catch a production file importing a harness by path
 (`@tests/…`). In production mode `tests/**` is outside the project, so knip has no opinion on it. That
 case belongs to the `no-restricted-imports` patterns in
-[`eslint.config.mjs`](../eslint.config.mjs). Package names catch the harm from any file, file names
+[`eslint.config.mjs`](../../eslint.config.mjs). Package names catch the harm from any file, file names
 catch the harm from any package, and each covers what the other structurally cannot — which is why
 both halves are in CI.
 

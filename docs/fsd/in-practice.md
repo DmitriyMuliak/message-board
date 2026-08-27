@@ -1,6 +1,6 @@
 # FSD in practice — how to classify a slice
 
-The rules are in [`lint-rules.md`](./architecture/lint-rules.md), and all seven are lint errors, so this document
+The rules are in [`lint-rules.md`](../architecture/lint-rules.md), and all seven are lint errors, so this document
 does not restate them. It answers the questions the rules leave open — the ones a linter cannot
 decide for you:
 
@@ -35,7 +35,7 @@ That is the whole difference. A widget adds nothing that was not already there.
 A slice may not import a sibling slice on its own layer (rule 2). So a card that needs
 `entities/message`, `entities/session`, `features/message-edit` and `features/message-delete` **at
 the same time** has nowhere to live except a layer above all four. That is precisely why
-[`widgets/message-card`](../src/widgets/message-card/ui/MessageCardWithActions.tsx) exists — it is not
+[`widgets/message-card`](../../src/widgets/message-card/ui/MessageCardWithActions.tsx) exists — it is not
 a stylistic choice, it is the only legal place for that composition.
 
 ### This repo's slices
@@ -60,7 +60,7 @@ The dependency rule is "a layer may import from any layer **strictly below** it"
 one down". There is no mandatory `views → widgets → features` chain. `views → features`,
 `views → entities`, `views → shared` are all legal.
 
-The code already does it — [`views/feed/ui/FeedView.tsx`](../src/views/feed/ui/FeedView.tsx):
+The code already does it — [`views/feed/ui/FeedView.tsx`](../../src/views/feed/ui/FeedView.tsx):
 
 ```ts
 import { serializeFilters, useMessagesInfinite, type FeedFilters } from '@/entities/message';
@@ -74,9 +74,9 @@ A view takes both a component and a **hook** (`useFeedFilters`) straight from a 
 `import-fsd/no-denied-layers` confirming it.
 
 The only condition on the hook is rule 3: it must be in the slice's public API.
-[`features/feed-filters/index.ts`](../src/features/feed-filters/index.ts) exports `useFeedFilters`. A
+[`features/feed-filters/index.ts`](../../src/features/feed-filters/index.ts) exports `useFeedFilters`. A
 barrel may promise anything — components, hooks, types, schemas. What it promises is
-[a decision, not a dump](./inner/ARCHITECTURE.md#public-api-decisions).
+[a decision, not a dump](../inner/ARCHITECTURE.md#public-api-decisions).
 
 ### So when is a widget actually needed?
 
@@ -88,7 +88,7 @@ Three cases, and only three:
 
 None of those? Keep the component in `views/<slice>/ui/`. This repo does: `MessageList`,
 `LoadMoreButton`, `FeedEmpty`, `FeedError` and `FeedSkeleton` all live in
-[`views/feed/ui/`](../src/views/feed/ui/), not in `widgets`. This is the single most common mistake
+[`views/feed/ui/`](../../src/views/feed/ui/), not in `widgets`. This is the single most common mistake
 when adopting FSD — a widget per block, and a layer of single-use wrappers whose only contribution is
 one more hop in the import graph.
 
@@ -116,7 +116,7 @@ looks like from the inside. The widget is the seam, so the widget carries the sh
 
 ### `useState` in a widget, passed into a feature
 
-[`MessageCardWithActions`](../src/widgets/message-card/ui/MessageCardWithActions.tsx) does exactly
+[`MessageCardWithActions`](../../src/widgets/message-card/ui/MessageCardWithActions.tsx) does exactly
 that, and it is the canonical shape:
 
 ```ts
@@ -138,7 +138,7 @@ widget holds the state and hands it to a feature's component. Legal: the import 
 
 Both sides are in place here. `isEditing` and `deleteConfirming` are arrangement, held by the widget.
 The editor's form state belongs to the feature —
-[`MessageEditor`](../src/features/message-edit/ui/MessageEditor.tsx) sets up its own `useForm`, and
+[`MessageEditor`](../../src/features/message-edit/ui/MessageEditor.tsx) sets up its own `useForm`, and
 the widget knows nothing about fields; it receives a finished `content` in `onSave`.
 
 **The smell to watch for:** a widget that starts holding a feature's field values, or duplicating its
@@ -166,7 +166,7 @@ Allowed, as long as the store is declared **below**:
 | in another widget                       | no — sibling                                                                                                                                                                  |
 
 Both legal cases already exist: `useSession()` from
-[`entities/session`](../src/entities/session/model/SessionProvider.tsx) is a widget subscribing to an
+[`entities/session`](../../src/entities/session/model/SessionProvider.tsx) is a widget subscribing to an
 entity's context (both `Header` and `message-card` do it), and `useToast()` from `shared/ui/Toaster`
 is the generic, domain-free case.
 
@@ -188,7 +188,7 @@ stating out loud is the other one: **most "where should the store live" question
 is no store.**
 
 Choosing between `useState`, context and an external store in the first place is a separate question
-from which layer owns it — that one is in [`store/README.md`](./store/README.md).
+from which layer owns it — that one is in [`store/README.md`](../store/README.md).
 
 ### One practical caveat
 

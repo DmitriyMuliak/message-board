@@ -28,7 +28,7 @@ not for `server/` is in [`layer-naming.md`](./layer-naming.md).
 
 **There is an eighth**, and it needs a different tool: whether anything actually imports what a
 barrel promises is a module-graph question, which ESLint structurally cannot answer. `knip` does —
-see [`knip-in-ci.md`](../knip-in-ci.md).
+see [`knip-in-ci.md`](../infra/knip-in-ci.md).
 
 Tests are deliberately exempt from rules 1–6, and not from 7. Why each rule exists, what it caught,
 and how the exemption is wired:

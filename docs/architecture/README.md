@@ -12,6 +12,6 @@ a decision this codebase already made.
 | [`data-layer.md`](./data-layer.md)     | Fetching, hydration, optimistic writes, invalidation, where failures are caught    |
 | [`rendering.md`](./rendering.md)       | RSC vs client, per-route strategy, re-render discipline, keeping the bundle honest |
 
-Standalone guides — FSD classification, the dead-code gate, caching, component testing — are one
-level up, in [`docs/`](../docs-index.md). What this app specifically does is in
-[`docs/inner/ARCHITECTURE.md`](../inner/ARCHITECTURE.md).
+Standalone guides — FSD classification, the dead-code gate, caching, component testing — live in
+their own topic folders alongside this one; the [documentation index](../docs-index.md) lists them
+all. What this app specifically does is in [`docs/inner/ARCHITECTURE.md`](../inner/ARCHITECTURE.md).

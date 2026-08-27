@@ -67,7 +67,7 @@ for query clients. The list, and what each one is for:
 in _through_ `index.ts`, never what is _in_ it — and ESLint reads one file at a time, so to a barrel a
 re-export always looks used. Whether anything on the other side imports it is a module-graph
 question. [`knip`](https://knip.dev) answers it and runs in CI right after `eslint`. The full account
-of what it checks and why it is there is in [`docs/knip-in-ci.md`](docs/knip-in-ci.md).
+of what it checks and why it is there is in [`docs/knip-in-ci.md`](docs/infra/knip-in-ci.md).
 
 **`@public` is the whole vocabulary**: an export tagged that way may stay unimported. Anything else a
 barrel promises has to have a consumer.
@@ -82,7 +82,7 @@ something to block a merge on.
 ## Further reading
 
 Deciding whether a thing is a feature or a widget, and who may import whom, is the one part of FSD a
-linter cannot settle for you — [`docs/fsd-in-practice.md`](docs/fsd-in-practice.md).
+linter cannot settle for you — [`docs/fsd-in-practice.md`](docs/fsd/in-practice.md).
 
 The sections above each have a chapter in [`docs/architecture/`](docs/architecture/README.md), which
 holds the arguments this file only summarises:
@@ -96,13 +96,13 @@ holds the arguments this file only summarises:
 
 Standalone guides — things you would look up on their own rather than to understand this repo:
 
-| Topic               | Guide                                                |
-| ------------------- | ---------------------------------------------------- |
-| Classifying a slice | [FSD in practice](docs/fsd-in-practice.md)           |
-| Dead-code gate      | [Why knip runs in CI](docs/knip-in-ci.md)            |
-| Component testing   | [TestKit for a component](docs/testkit-component.md) |
-| This app in detail  | [Implementation notes](docs/inner/ARCHITECTURE.md)   |
-| Everything else     | [Documentation index](docs/docs-index.md)            |
+| Topic               | Guide                                                        |
+| ------------------- | ------------------------------------------------------------ |
+| Classifying a slice | [FSD in practice](docs/fsd/in-practice.md)                   |
+| Dead-code gate      | [Why knip runs in CI](docs/infra/knip-in-ci.md)              |
+| Component testing   | [TestKit for a component](docs/testing/testkit-component.md) |
+| This app in detail  | [Implementation notes](docs/inner/ARCHITECTURE.md)           |
+| Everything else     | [Documentation index](docs/docs-index.md)                    |
 
 ---
 
