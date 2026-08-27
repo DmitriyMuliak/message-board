@@ -53,7 +53,7 @@ also governed an unrelated dropdown's query and every query written since. Worth
 `UseSuspenseInfiniteQueryOptions` _omits_ `placeholderData`, so a query default is the only place it
 type-checks — it works at runtime, but on a library inconsistency rather than a contract. The full
 case — mechanics, failure modes, and the four correct ways to use the option — is in
-[`TSQueryPrevDataGuide.md`](../TSQueryPrevDataGuide.md).
+[`TSQueryPrevDataGuide.md`](../tanstack-query/placeholder-data.md).
 
 **Cursor pagination, not offset.** Offset breaks under an app's own optimistic writes: insert a row
 at the top while the reader is on page 1 and page 2 repeats a row; delete one and page 2 skips one. A
@@ -64,4 +64,4 @@ sort key can change later without breaking a client that decided to parse it.
 
 Which write belongs in a server action and which in a route handler, and which of Next's four caches
 you are actually talking about, is a separate question:
-[`caching-and-server-actions.md`](../caching-and-server-actions.md).
+[`caching-and-server-actions.md`](../nextjs/caching-and-server-actions.md).

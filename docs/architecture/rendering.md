@@ -43,4 +43,4 @@ Load JS per route — the reasoning, and the upstream issue, are in the header o
 [`.size-limit.js`](../../.size-limit.js).
 
 Caching is a separate axis: which of Next's four caches a given route touches, and what that means
-for writes, is in [`caching-and-server-actions.md`](../caching-and-server-actions.md).
+for writes, is in [`caching-and-server-actions.md`](../nextjs/caching-and-server-actions.md).

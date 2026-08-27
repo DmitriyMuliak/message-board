@@ -96,13 +96,13 @@ holds the arguments this file only summarises:
 
 Standalone guides — things you would look up on their own rather than to understand this repo:
 
-| Topic               | Guide                                              |
-| ------------------- | -------------------------------------------------- |
-| Classifying a slice | [FSD in practice](docs/fsd-in-practice.md)         |
-| Dead-code gate      | [Why knip runs in CI](docs/knip-in-ci.md)          |
-| Component testing   | [PortKit](docs/portkit/README.md)                  |
-| This app in detail  | [Implementation notes](docs/inner/ARCHITECTURE.md) |
-| Everything else     | [Documentation index](docs/docs-index.md)          |
+| Topic               | Guide                                                |
+| ------------------- | ---------------------------------------------------- |
+| Classifying a slice | [FSD in practice](docs/fsd-in-practice.md)           |
+| Dead-code gate      | [Why knip runs in CI](docs/knip-in-ci.md)            |
+| Component testing   | [TestKit for a component](docs/testkit-component.md) |
+| This app in detail  | [Implementation notes](docs/inner/ARCHITECTURE.md)   |
+| Everything else     | [Documentation index](docs/docs-index.md)            |
 
 ---
 
