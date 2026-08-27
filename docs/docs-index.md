@@ -62,6 +62,7 @@
 | Document                                                             | Answers                                                                             |
 | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | [Caching and server actions](./nextjs/caching-and-server-actions.md) | Server action or route handler? Which of the four Next caches you are talking about |
+| [The BFF proxy route](./nextjs/bff-proxy.md)                         | One catch-all handler that checks auth and forwards — and the header trap in it     |
 | [Cancelling a Server Action](./nextjs/aborting-server-actions.md)    | You cannot stop the server — but you can stop waiting                               |
 | [Streaming UI](./streaming/streaming-ui.md)                          | Nine ways to stream into a React UI, with a decision tree                           |
 
