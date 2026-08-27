@@ -1,7 +1,7 @@
 # `views/` and `server/` — two names that are not stock FSD
 
 Both deviations are deliberate, and both were chosen for what the linter can still check afterwards.
-The short version is in [`ARCHITECTURE.md` → Structure](../ARCHITECTURE.md#structure); this is the
+The short version is in [`ARCHITECTURE.md` → Structure](../../ARCHITECTURE.md#structure); this is the
 argument.
 
 ---
@@ -18,7 +18,7 @@ and it needs a reason.
 [`eslint-plugin-import-fsd`](https://www.npmjs.com/package/eslint-plugin-import-fsd) ships a layer
 table (`dist/cjs/utils/layers.js`) in which `view` / `views` / `screen` / `screens` / `layout` /
 `layouts` are aliases at **`pages` rank** — flagged legacy, which is what the `no-deprecated-layers`
-ignore in [`eslint.config.mjs`](../eslint.config.mjs) is for.
+ignore in [`eslint.config.mjs`](../../eslint.config.mjs) is for.
 
 `_pages` is in no table at all. It would be an **unknown** layer, so it would need a
 `no-unknown-layers` ignore, and after that `no-denied-layers` silently stops checking every import in
@@ -50,7 +50,7 @@ stack and gets an explicit rule instead of an inferred one:
 Two things enforce that, one step apart:
 
 - `import 'server-only'` at the top of those modules turns a leak into a **compile** error.
-- Rule 4 in [`docs/lint-rules.md`](./lint-rules.md) turns it into a **lint** error one step earlier,
+- Rule 4 in [`lint-rules.md`](./lint-rules.md) turns it into a **lint** error one step earlier,
   in the editor, before the build runs.
 
 The cost is the same one `_pages` would have had: `import-fsd` cannot rank an unknown layer, so

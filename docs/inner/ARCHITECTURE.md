@@ -13,7 +13,7 @@ rollback, and a virtualized list over 1200 seeded messages.
 ## Filtering
 
 **The URL is the only source of truth** — the general form of this is in
-[`data-layer.md`](../data-layer.md). What is specific here:
+[`data-layer.md`](../architecture/data-layer.md). What is specific here:
 
 - Three filter dimensions: `tags` (multi), `user` (single), and a `from`/`to` date range.
 - `serializeFilters` produces the query string _and_ the stable part of the query key, so a filter set
@@ -108,14 +108,14 @@ is not an API.
 
 ## Why each rule exists
 
-The list of seven is in [`lint-rules.md`](../lint-rules.md). This is what each one is doing here, and
+The list of seven is in [`lint-rules.md`](../architecture/lint-rules.md). This is what each one is doing here, and
 what it caught.
 
 **Rules 1–2 come from `eslint-plugin-import-fsd`; 3–7 are native `no-restricted-imports` patterns**,
 no extra dependency. The plugin ranks `views` at `pages` level, which is what makes that rename free;
 `server` is declared unknown-on-purpose via `ignores` — its `overrides` setting matches the _resolved_
 path, not the `@/…` specifier, so it cannot do this job. Full reasoning in
-[`layer-naming.md`](../layer-naming.md).
+[`layer-naming.md`](../architecture/layer-naming.md).
 
 **Rule 6 is not about bundle size.** A stray import of `@testing-library` would only make the bundle
 fat; an import of `tests/unit/test-utils/next-navigation.mock` ships a **stub in place of the real
@@ -259,7 +259,7 @@ perfectly good 60 fps.
 
 Whether the bundle grew is a different question from what grew: the budget in
 [`.size-limit.js`](../../.size-limit.js) answers the first, `pnpm analyze` the second — see
-[`rendering.md`](../rendering.md).
+[`rendering.md`](../architecture/rendering.md).
 
 ---
 
@@ -273,7 +273,7 @@ per-filter, so the key space explodes and nothing is shared. A public read-only 
 message would be the ISR candidate.
 
 **Bundle & re-renders as features grow.** The general discipline is in
-[`rendering.md`](../rendering.md). Applied here: the date picker costs 0 bytes until opened, filters
+[`rendering.md`](../architecture/rendering.md). Applied here: the date picker costs 0 bytes until opened, filters
 live in the URL rather than a context that re-renders the subtree, RHF keeps the composer
 uncontrolled so typing re-renders the counter and not the feed, and virtualization caps mounted rows
 regardless of feed length.

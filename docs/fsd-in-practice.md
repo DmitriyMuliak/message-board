@@ -1,6 +1,6 @@
 # FSD in practice — how to classify a slice
 
-The rules are in [`lint-rules.md`](./lint-rules.md), and all seven are lint errors, so this document
+The rules are in [`lint-rules.md`](./architecture/lint-rules.md), and all seven are lint errors, so this document
 does not restate them. It answers the questions the rules leave open — the ones a linter cannot
 decide for you:
 

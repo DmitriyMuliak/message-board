@@ -7,7 +7,7 @@ there for a specific structural reason, not for tidiness.
 
 ## The hole the public-API rule opened
 
-Rule 3 in [`lint-rules.md`](./lint-rules.md) bans deep imports, which
+Rule 3 in [`lint-rules.md`](./architecture/lint-rules.md) bans deep imports, which
 forces every slice to have an `index.ts`. That barrel then **hides dead code from ESLint**: within
 `index.ts` a re-export always looks used, and ESLint reads one file at a time. Whether anything on the
 other side imports the symbol is a module-graph question, and structurally not one ESLint can answer.

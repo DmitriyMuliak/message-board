@@ -32,7 +32,7 @@ and switch after — one extra pre-paint render, in exchange for correct SSR out
 
 Whether it grew and what grew are different questions, and they need different tools.
 
-- **Did it grow?** [`.size-limit.js`](../.size-limit.js) measures gzipped `.next/static/**` against a
+- **Did it grow?** [`.size-limit.js`](../../.size-limit.js) measures gzipped `.next/static/**` against a
   budget and fails the build on a regression. It runs in CI after `next build`.
 - **What grew?** `pnpm analyze` (`next experimental-analyze`) opens Turbopack's module graph, filtered
   by route, with the import chain that explains why a module is in there. Interactive only, so it
@@ -40,7 +40,7 @@ Whether it grew and what grew are different questions, and they need different t
 
 Next 16 removed per-route build stats, which is why the budget covers whole output rather than First
 Load JS per route — the reasoning, and the upstream issue, are in the header of
-[`.size-limit.js`](../.size-limit.js).
+[`.size-limit.js`](../../.size-limit.js).
 
 Caching is a separate axis: which of Next's four caches a given route touches, and what that means
-for writes, is in [`caching-and-server-actions.md`](./caching-and-server-actions.md).
+for writes, is in [`caching-and-server-actions.md`](../caching-and-server-actions.md).

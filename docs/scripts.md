@@ -18,7 +18,7 @@ direction, no sibling-slice imports, slice public APIs, who may reach `src/serve
 production code never imports a test, and that every TanStack Query client comes from the one factory
 in `app/query-client.ts`. The same command runs in [CI](../.github/workflows/verify.yml), so a PR that
 breaks the architecture fails before review. The seven rules are listed in
-[`lint-rules.md`](./lint-rules.md).
+[`lint-rules.md`](./architecture/lint-rules.md).
 
 `pnpm knip` is the eighth rule and the one ESLint cannot hold: whether anything actually imports what a
 slice's `index.ts` promises. It also runs in CI. An export that is unimported on purpose says so with

@@ -50,7 +50,7 @@ that schema is the artifact you'd hand a backend team.
   `@/server/**`.
 
 Why `views` and not the official `_pages`, why `server` sits outside the layer stack, and what each
-choice costs in lint coverage: [`docs/layer-naming.md`](docs/layer-naming.md).
+choice costs in lint coverage: [`docs/architecture/layer-naming.md`](docs/architecture/layer-naming.md).
 
 ---
 
@@ -61,7 +61,7 @@ Prose does not hold an architecture. Seven rules are lint errors in
 [CI](.github/workflows/verify.yml) on every PR — layer direction, sibling slices, slice public APIs,
 who may reach `server/`, `shared/` staying a leaf, production never importing a test, and one factory
 for query clients. The list, and what each one is for:
-[`docs/lint-rules.md`](docs/lint-rules.md).
+[`docs/architecture/lint-rules.md`](docs/architecture/lint-rules.md).
 
 **The eighth rule is a different tool, because ESLint cannot hold it.** Rule 3 enforces that you come
 in _through_ `index.ts`, never what is _in_ it — and ESLint reads one file at a time, so to a barrel a
@@ -84,17 +84,25 @@ something to block a merge on.
 Deciding whether a thing is a feature or a widget, and who may import whom, is the one part of FSD a
 linter cannot settle for you — [`docs/fsd-in-practice.md`](docs/fsd-in-practice.md).
 
-| Topic                | Document                                           |
-| -------------------- | -------------------------------------------------- |
-| Classifying a slice  | [FSD in practice](docs/fsd-in-practice.md)         |
-| Layer naming         | [`views/` and `server/`](docs/layer-naming.md)     |
-| The enforced rules   | [Lint rules](docs/lint-rules.md)                   |
-| Dead-code gate       | [Why knip runs in CI](docs/knip-in-ci.md)          |
-| Fetching and caching | [The data layer](docs/data-layer.md)               |
-| RSC, routes, bundles | [Rendering](docs/rendering.md)                     |
-| Component testing    | [PortKit](docs/portkit/README.md)                  |
-| This app in detail   | [Implementation notes](docs/inner/ARCHITECTURE.md) |
-| Everything else      | [Documentation index](docs/docs-index.md)          |
+The sections above each have a chapter in [`docs/architecture/`](docs/architecture/README.md), which
+holds the arguments this file only summarises:
+
+| Topic                | Chapter                                                     |
+| -------------------- | ----------------------------------------------------------- |
+| Layer naming         | [`views/` and `server/`](docs/architecture/layer-naming.md) |
+| The enforced rules   | [Lint rules](docs/architecture/lint-rules.md)               |
+| Fetching and caching | [The data layer](docs/architecture/data-layer.md)           |
+| RSC, routes, bundles | [Rendering](docs/architecture/rendering.md)                 |
+
+Standalone guides — things you would look up on their own rather than to understand this repo:
+
+| Topic               | Guide                                              |
+| ------------------- | -------------------------------------------------- |
+| Classifying a slice | [FSD in practice](docs/fsd-in-practice.md)         |
+| Dead-code gate      | [Why knip runs in CI](docs/knip-in-ci.md)          |
+| Component testing   | [PortKit](docs/portkit/README.md)                  |
+| This app in detail  | [Implementation notes](docs/inner/ARCHITECTURE.md) |
+| Everything else     | [Documentation index](docs/docs-index.md)          |
 
 ---
 
